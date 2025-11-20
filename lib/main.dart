@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +6,9 @@ import 'package:myapp/screens/splash_screen.dart';
 import 'package:myapp/screens/home_screen.dart';
 import 'package:myapp/screens/auth/auth_selection_screen.dart';
 import 'package:myapp/screens/auth/registration_options_screen.dart';
+import 'package:myapp/screens/auth/phone_registration_screen.dart';
+import 'package:myapp/screens/auth/phone_verification_screen.dart';
+import 'package:myapp/screens/event_list_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -80,6 +82,18 @@ final GoRouter _router = GoRouter(
      GoRoute(
       path: '/register-options',
       builder: (context, state) => const RegistrationOptionsScreen(),
+    ),
+    GoRoute(
+      path: '/phone-registration',
+      builder: (context, state) => const PhoneRegistrationScreen(),
+    ),
+    GoRoute(
+      path: '/phone-verification',
+      builder: (context, state) => const PhoneVerificationScreen(),
+    ),
+    GoRoute(
+      path: '/event-list',
+      builder: (context, state) => const EventListScreen(),
     ),
   ],
 );

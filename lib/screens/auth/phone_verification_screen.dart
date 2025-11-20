@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class PhoneRegistrationScreen extends StatelessWidget {
-  const PhoneRegistrationScreen({super.key});
+class PhoneVerificationScreen extends StatelessWidget {
+  const PhoneVerificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final phoneController = TextEditingController(text: "+7 (123) 456-78-90");
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -35,7 +33,7 @@ class PhoneRegistrationScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                'Введите номер телефона',
+                'Введите код из смс',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -44,10 +42,17 @@ class PhoneRegistrationScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               TextField(
-                controller: phoneController,
-                readOnly: true,
-                style: const TextStyle(color: Colors.grey),
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 20, letterSpacing: 10),
+                keyboardType: TextInputType.number,
+                maxLength: 4,
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    context.go('/home');
+                  }
+                },
                 decoration: InputDecoration(
+                  counterText: "",
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: const BorderSide(
@@ -65,9 +70,9 @@ class PhoneRegistrationScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              ElevatedButton(
+               ElevatedButton(
                 onPressed: () {
-                  context.go('/phone-verification');
+                  context.go('/home');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFD5555),

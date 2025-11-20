@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import './phone_registration_screen.dart';
 
 class RegistrationOptionsScreen extends StatelessWidget {
   const RegistrationOptionsScreen({super.key});
@@ -35,10 +34,7 @@ class RegistrationOptionsScreen extends StatelessWidget {
                   const SizedBox(height: 40),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const PhoneRegistrationScreen()),
-                      );
+                      context.go('/phone-registration');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFD5555),
