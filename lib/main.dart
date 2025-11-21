@@ -7,10 +7,13 @@ import 'package:myapp/screens/auth/phone_verification_screen.dart';
 import 'package:myapp/screens/auth/registration_options_screen.dart';
 import 'package:myapp/screens/favorite_organizator_list.dart';
 import 'package:myapp/screens/home_screen/attending_events_screen.dart';
-import 'package:myapp/screens/home_screen/event_list_screen.dart';
+import 'package:myapp/screens/home_screen/event_list_screen.dart' hide Event;
 import 'package:myapp/screens/home_screen/favorited_organizators.dart';
 import 'package:myapp/screens/home_screen/home_screen.dart';
 import 'package:myapp/screens/home_screen/profile.dart';
+import 'package:myapp/screens/my_events/edit_event.dart';
+import 'package:myapp/screens/my_events/my_events.dart';
+import 'package:myapp/screens/my_events/new_event.dart';
 import 'package:myapp/screens/onboarding_screen.dart';
 import 'package:myapp/screens/profile/edit_profile.dart';
 import 'package:myapp/screens/profile/settings.dart';
@@ -118,6 +121,21 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/my-events',
+      builder: (context, state) => const MyEventsScreen(),
+    ),
+    GoRoute(
+      path: '/add-event',
+      builder: (context, state) => const AddEventScreen(),
+    ),
+    GoRoute(
+      path: '/edit-event',
+      builder: (context, state) {
+        final event = state.extra as Event;
+        return EditEventScreen(event: event);
+      },
     ),
   ],
 );

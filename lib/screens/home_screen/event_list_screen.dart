@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:myapp/screens/event_detail_screen.dart';
 import 'package:myapp/widgets/custom_bottom_navigation_bar.dart';
 
+import '../models/event.dart';
+
 class EventListScreen extends StatefulWidget {
   const EventListScreen({super.key});
 
@@ -28,9 +30,12 @@ class _EventListScreenState extends State<EventListScreen> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.filter_list, color: Colors.grey[600]),
-            onPressed: () {},
+          TextButton(
+            onPressed: () => context.go('/my-events'),
+            child: const Text(
+              'Мои события',
+              style: TextStyle(color: Color(0xFF7FC9FE)),
+            ),
           ),
         ],
       ),
@@ -204,24 +209,4 @@ class _EventPlaceholder extends StatelessWidget {
       ),
     );
   }
-}
-
-class Event {
-  final String title;
-  final String participants;
-  final String cost;
-  final String dateTime;
-  final String address;
-  final String description;
-  final String imageUrl;
-
-  Event({
-    required this.title,
-    required this.participants,
-    required this.cost,
-    required this.dateTime,
-    required this.address,
-    required this.description,
-    required this.imageUrl,
-  });
 }
