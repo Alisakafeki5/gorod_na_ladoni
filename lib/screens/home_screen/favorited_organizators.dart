@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myapp/widgets/custom_bottom_navigation_bar.dart';
 
 class FavoriteOrganizersScreen extends StatefulWidget {
   const FavoriteOrganizersScreen({super.key});
@@ -30,12 +31,7 @@ class _FavoriteOrganizersScreenState extends State<FavoriteOrganizersScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.grey[800]),
-          onPressed: () {
-            context.push('/home');
-          },
-        ),
+        automaticallyImplyLeading: false,
         title: const Text(
           'Избранные организаторы',
           style: TextStyle(color: Colors.black, fontSize: 20),
@@ -65,6 +61,7 @@ class _FavoriteOrganizersScreenState extends State<FavoriteOrganizersScreen> {
             ),
         ],
       ),
+      bottomNavigationBar: const CustomBottomNavigationBar(selectedIndex: 3),
     );
   }
 }

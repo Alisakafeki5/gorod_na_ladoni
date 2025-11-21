@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myapp/widgets/custom_bottom_navigation_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,21 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    if (index == 1) {
-      context.go('/event-list');
-    } else if (index == 3) {
-      context.go('/favorites');
-    } else if (index == 4) {
-      context.go('/profile');
-    } else {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
-  }
+  final int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -58,25 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: IndexedStack(index: _selectedIndex, children: screenContent),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedItemColor: const Color(0xFF7FC9FE),
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
-        ],
-      ),
+      bottomNavigationBar: CustomBottomNavigationBar(selectedIndex: _selectedIndex),
     );
   }
 }

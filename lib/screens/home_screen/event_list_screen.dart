@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myapp/screens/event_detail_screen.dart';
+import 'package:myapp/widgets/custom_bottom_navigation_bar.dart';
 
 class EventListScreen extends StatefulWidget {
   const EventListScreen({super.key});
@@ -18,12 +19,7 @@ class _EventListScreenState extends State<EventListScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.grey[800]),
-          onPressed: () {
-            context.push('/home');
-          },
-        ),
+        automaticallyImplyLeading: false,
         title: TextField(
           decoration: InputDecoration(
             hintText: 'Поиск по названию...',
@@ -123,6 +119,7 @@ class _EventListScreenState extends State<EventListScreen> {
                 );
               },
             ),
+      bottomNavigationBar: const CustomBottomNavigationBar(selectedIndex: 1),
     );
   }
 }
