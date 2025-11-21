@@ -13,12 +13,13 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    // The search icon is at index 1.
-    // When tapped, navigate to the EventListScreen.
     if (index == 1) {
       context.go('/event-list');
+    } else if (index == 3) {
+      context.go('/favorites');
+    } else if (index == 4) {
+      context.go('/profile');
     } else {
-      // For all other tabs, update the state to show the corresponding view.
       setState(() {
         _selectedIndex = index;
       });
@@ -27,9 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Define the widgets for the tabs that are displayed within the HomeScreen.
     final List<Widget> screenContent = [
-      // Index 0: Home/Map
       Container(
         color: Colors.grey[300],
         child: const Center(
@@ -39,13 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      // Index 1: Search (This is just a placeholder, as we navigate away)
       Container(),
-      // Index 2: Add
       const Center(child: Text('Add Screen')),
-      // Index 3: Favorites
-      const Center(child: Text('Favorites Screen')),
-      // Index 4: Profile
+      Container(),
       const Center(child: Text('Profile Screen')),
     ];
 
@@ -54,10 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: SvgPicture.asset(
-          'assets/images/logo.svg',
-          height: 30,
-        ),
+        title: SvgPicture.asset('assets/images/logo.svg', height: 30),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none, color: Colors.black),
@@ -65,11 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      // Use an IndexedStack to preserve the state of the other screens.
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: screenContent,
-      ),
+      body: IndexedStack(index: _selectedIndex, children: screenContent),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -79,26 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: const Color(0xFF7FC9FE),
         unselectedItemColor: Colors.grey,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: '',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_box_outlined),
             label: '',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: '',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
         ],
       ),
     );

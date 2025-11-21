@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myapp/screens/event_detail_screen.dart';
 
 class EventListScreen extends StatefulWidget {
@@ -9,8 +10,6 @@ class EventListScreen extends StatefulWidget {
 }
 
 class _EventListScreenState extends State<EventListScreen> {
-  // Data will be loaded from a database.
-  // This list is empty to show the placeholder state.
   final List<Event> _events = [];
 
   @override
@@ -22,7 +21,7 @@ class _EventListScreenState extends State<EventListScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.grey[800]),
           onPressed: () {
-            Navigator.of(context).pop();
+            context.push('/home');
           },
         ),
         title: TextField(
@@ -35,9 +34,7 @@ class _EventListScreenState extends State<EventListScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.filter_list, color: Colors.grey[600]),
-            onPressed: () {
-              // Non-functional filter button
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -51,9 +48,14 @@ class _EventListScreenState extends State<EventListScreen> {
               itemBuilder: (BuildContext context, int index) {
                 final event = _events[index];
                 return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   elevation: 2,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Column(
@@ -76,9 +78,18 @@ class _EventListScreenState extends State<EventListScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(event.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    event.title,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   const SizedBox(height: 4),
-                                  Text('${event.participants} · ${event.cost}', style: TextStyle(color: Colors.grey[600])),
+                                  Text(
+                                    '${event.participants} · ${event.cost}',
+                                    style: TextStyle(color: Colors.grey[600]),
+                                  ),
                                   const SizedBox(height: 4),
                                   Text(event.dateTime),
                                   const SizedBox(height: 4),
@@ -97,7 +108,10 @@ class _EventListScreenState extends State<EventListScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const EventDetailScreen()),
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const EventDetailScreen(),
+                                ),
                               );
                             },
                             child: const Text('Подробнее'),
@@ -178,10 +192,12 @@ class _EventPlaceholder extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () {
-                   Navigator.push(
-                     context,
-                     MaterialPageRoute(builder: (context) => const EventDetailScreen()),
-                   );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EventDetailScreen(),
+                    ),
+                  );
                 },
                 child: const Text('Подробнее'),
               ),
