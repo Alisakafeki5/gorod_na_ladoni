@@ -9,6 +9,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     if (index == 1) {
       context.go('/event-list');
+    } else if (index == 2) {
+      context.go('/attending-events');
     } else if (index == 3) {
       context.go('/favorites');
     } else if (index == 4) {
