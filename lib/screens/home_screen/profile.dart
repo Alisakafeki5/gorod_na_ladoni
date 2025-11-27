@@ -1,41 +1,110 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/widgets/custom_bottom_navigation_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final buttonTextStyle = GoogleFonts.alegreyaSansSc(
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: Colors.white,
+    );
+    final textButtonTextStyle = GoogleFonts.alegreyaSansSc(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: const Color(0xFFFD5555),
+    );
+    final titleTextStyle = GoogleFonts.alegreyaSansSc(
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+    );
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        title: const Text("Profile"),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            const ProfilePic(),
-            const SizedBox(height: 20),
-            ProfileMenu(
-              text: "My Account",
-              icon: Icons.person_outline,
-              press: () => context.go('/edit_profile'),
+      backgroundColor: Colors.lightBlue, // Fallback color
+      body: Stack(
+        children: [
+          // Background Gradient
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.cyan.shade300, Colors.blue.shade500],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-            ProfileMenu(
-              text: "Settings",
-              icon: Icons.settings_outlined,
-              press: () => context.go('/settings'),
+          ),
+
+          // White content card
+          Positioned(
+            top: 200,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    20.0,
+                    80.0,
+                    20.0,
+                    100.0,
+                  ), // Added padding for nav bar
+                  child: Column(
+                    children: [
+                      Text('Мёд для ушей', style: titleTextStyle),
+                      const SizedBox(height: 40),
+                      ElevatedButton(
+                        onPressed: () => context.go('/edit_profile'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFD5555),
+                          foregroundColor: Colors.white,
+                          elevation: 5,
+                          shadowColor: const Color(0xFF5C5A5A),
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text('Мой аккаунт', style: buttonTextStyle),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () => context.go('/settings'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFD5555),
+                          foregroundColor: Colors.white,
+                          elevation: 5,
+                          shadowColor: const Color(0xFF5C5A5A),
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text('Настройки', style: buttonTextStyle),
+                      ),
+                      const SizedBox(height: 20),
+                      TextButton(
+                        onPressed: () => context.go('/auth-selection'),
+                        child: Text('Выйти', style: textButtonTextStyle),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            ProfileMenu(
-              text: "Log Out",
-              icon: Icons.logout,
-              press: () => context.go('/auth-selection'),
-            ),
-          ],
-        ),
+          ),
+
+          // Profile Picture
+          const Positioned(top: 140, left: 0, right: 0, child: ProfilePic()),
+        ],
       ),
       bottomNavigationBar: const CustomBottomNavigationBar(selectedIndex: 4),
     );
@@ -43,86 +112,42 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class ProfilePic extends StatelessWidget {
-  const ProfilePic({Key? key}) : super(key: key);
+  const ProfilePic({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 115,
-      width: 115,
-      child: Stack(
-        fit: StackFit.expand,
-        clipBehavior: Clip.none,
-        children: [
-          const CircleAvatar(
-            backgroundImage: NetworkImage(
-              "https://i.postimg.cc/0jqKB6mS/Profile-Image.png",
-            ),
+    return Align(
+      alignment: Alignment.center,
+      child: SizedBox(
+        height: 120,
+        width: 120,
+        child: Container(
+          decoration: BoxDecoration(
+            shape:
+                BoxShape.rectangle, // Changed to rectangle for rounded corners
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(color: Colors.white, width: 4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
           ),
-          Positioned(
-            right: -16,
-            bottom: 0,
-            child: SizedBox(
-              height: 46,
-              width: 46,
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    side: const BorderSide(color: Colors.white),
-                  ),
-                  backgroundColor: const Color(0xFFF5F6F9),
-                ),
-                onPressed: () {},
-                child: const Icon(Icons.camera_alt, color: Color(0xFF757575)),
+          child: ClipRRect(
+            // Clip the image to the rounded corners
+            borderRadius: BorderRadius.circular(
+              21,
+            ), // Inner radius should be slightly less
+            child: const Image(
+              fit: BoxFit.cover,
+              image: NetworkImage(
+                "https://i.postimg.cc/0jqKB6mS/Profile-Image.png",
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class ProfileMenu extends StatelessWidget {
-  const ProfileMenu({
-    Key? key,
-    required this.text,
-    required this.icon,
-    this.press,
-  }) : super(key: key);
-
-  final String text;
-  final IconData icon;
-  final VoidCallback? press;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: TextButton(
-        style: TextButton.styleFrom(
-          foregroundColor: const Color(0xFFFF7643),
-          padding: const EdgeInsets.all(20),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          backgroundColor: const Color(0xFFF5F6F9),
-        ),
-        onPressed: press,
-        child: Row(
-          children: [
-            Icon(icon, color: const Color(0xFFFF7643), size: 22),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Text(
-                text,
-                style: const TextStyle(color: Color(0xFF757575)),
-              ),
-            ),
-            const Icon(Icons.arrow_forward_ios, color: Color(0xFF757575)),
-          ],
         ),
       ),
     );

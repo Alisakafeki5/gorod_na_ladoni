@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:myapp/screens/event_detail_screen.dart';
 import 'package:myapp/widgets/custom_bottom_navigation_bar.dart';
 
@@ -96,6 +95,11 @@ class _AttendingEventsScreenState extends State<AttendingEventsScreen> {
                                   builder: (context) =>
                                       const EventDetailScreen(),
                                 ),
+                              );
+                              style:
+                              ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFFD5555),
+                                foregroundColor: Colors.white,
                               );
                             },
                             child: const Text('Подробнее'),

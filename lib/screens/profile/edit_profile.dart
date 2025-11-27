@@ -1,159 +1,191 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final titleTextStyle = GoogleFonts.alegreyaSansSc(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: Colors.black87,
+    );
+    final labelTextStyle = GoogleFonts.alegreyaSansSc(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: Colors.black54,
+    );
+    final buttonTextStyle = GoogleFonts.alegreyaSansSc(
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: Colors.white,
+    );
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: false,
-        elevation: 0,
-        backgroundColor: const Color(0xFFFD5555),
-        foregroundColor: Colors.white,
-        title: const Text("Edit Profile"),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            const EditProfilePic(
-              image: 'https://i.postimg.cc/cCsYDjvj/user-2.png',
-              imageUploadBtnPress: null,
-            ),
-            const Divider(),
-            Form(
-              child: Column(
-                children: [
-                  // Никнейм
-                  UserInfoEditField(
-                    text: "Никнейм",
-                    child: TextFormField(
-                      initialValue: "annette_black",
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color(0xFFFD5555).withOpacity(0.05),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16.0 * 1.5,
-                          vertical: 16.0,
-                        ),
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Контакты
-                  UserInfoEditField(
-                    text: "Контакты",
-                    child: TextFormField(
-                      initialValue: "annette@gmail.com, +1 (316) 555-0116",
-                      maxLines: 2,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color(0xFFFD5555).withOpacity(0.05),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16.0 * 1.5,
-                          vertical: 16.0,
-                        ),
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                        ),
-                        hintText: "Email, телефон, социальные сети...",
-                      ),
-                    ),
-                  ),
-                  // Интересы
-                  UserInfoEditField(
-                    text: "Интересы",
-                    child: TextFormField(
-                      initialValue: "Путешествия, фотография, чтение",
-                      maxLines: 2,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color(0xFFFD5555).withOpacity(0.05),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16.0 * 1.5,
-                          vertical: 16.0,
-                        ),
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                        ),
-                        hintText: "Ваши увлечения и интересы...",
-                      ),
-                    ),
-                  ),
-                  // О себе
-                  UserInfoEditField(
-                    text: "О себе",
-                    child: TextFormField(
-                      initialValue:
-                          "Люблю путешествовать и фотографировать природу. Увлекаюсь чтением книг и изучением новых культур.",
-                      maxLines: 4,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color(0xFFFD5555).withOpacity(0.05),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16.0 * 1.5,
-                          vertical: 16.0,
-                        ),
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                        ),
-                        hintText: "Расскажите о себе...",
-                      ),
-                    ),
-                  ),
-                ],
+      backgroundColor: Colors.lightBlue, // Fallback color
+      body: Stack(
+        children: [
+          // Background Gradient
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.cyan.shade300, Colors.blue.shade500],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
             ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  width: 120,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      context.go('/profile');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(
-                        context,
-                      ).textTheme.bodyLarge!.color!.withOpacity(0.08),
-                      foregroundColor: Colors.grey[800],
-                      minimumSize: const Size(double.infinity, 48),
-                      shape: const StadiumBorder(),
-                    ),
-                    child: const Text("Cancel"),
+          ),
+
+          // White content card
+          Positioned(
+            top: 200,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 80.0, 20.0, 40.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.black54,
+                            ),
+                            onPressed: () => context.go('/profile'),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                'Редактировать профиль',
+                                style: titleTextStyle,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 48,
+                          ), // To balance the IconButton
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      // Form
+                      Form(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Никнейм', style: labelTextStyle),
+                            const SizedBox(height: 8),
+                            _buildTextFormField(initialValue: 'annette_black'),
+
+                            const SizedBox(height: 20),
+                            Text('Контакты', style: labelTextStyle),
+                            const SizedBox(height: 8),
+                            _buildTextFormField(
+                              initialValue:
+                                  'annette@gmail.com, +1 (316) 555-0116',
+                              hintText: 'Email, телефон, социальные сети...',
+                              maxLines: 2,
+                            ),
+
+                            const SizedBox(height: 20),
+                            Text('Интересы', style: labelTextStyle),
+                            const SizedBox(height: 8),
+                            _buildTextFormField(
+                              initialValue: 'Путешествия, фотография, чтение',
+                              hintText: 'Ваши увлечения и интересы...',
+                              maxLines: 2,
+                            ),
+
+                            const SizedBox(height: 20),
+                            Text('О себе', style: labelTextStyle),
+                            const SizedBox(height: 8),
+                            _buildTextFormField(
+                              initialValue:
+                                  'Люблю путешествовать и фотографировать природу. Увлекаюсь чтением книг и изучением новых культур.',
+                              hintText: 'Расскажите о себе...',
+                              maxLines: 4,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      // Save Button
+                      ElevatedButton(
+                        onPressed: () => _showSuccessMessage(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFD5555),
+                          foregroundColor: Colors.white,
+                          elevation: 5,
+                          shadowColor: const Color(0xFF5C5A5A),
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          'Сохранить изменения',
+                          style: buttonTextStyle,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 16.0),
-                SizedBox(
-                  width: 160,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFD5555),
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(double.infinity, 48),
-                      shape: const StadiumBorder(),
-                    ),
-                    onPressed: () {
-                      // Логика сохранения профиля
-                      _showSuccessMessage(context);
-                    },
-                    child: const Text("Save Update"),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ],
+          ),
+
+          // Profile Picture
+          const Positioned(
+            top: 140,
+            left: 0,
+            right: 0,
+            child: EditProfilePic(
+              image: "https://i.postimg.cc/0jqKB6mS/Profile-Image.png",
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextFormField({
+    required String initialValue,
+    String? hintText,
+    int maxLines = 1,
+  }) {
+    return TextFormField(
+      initialValue: initialValue,
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.grey.shade100,
+        hintText: hintText,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 16.0,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFFD5555), width: 2),
         ),
       ),
     );
@@ -162,14 +194,14 @@ class EditProfileScreen extends StatelessWidget {
   void _showSuccessMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text("Profile updated successfully!"),
+        content: const Text("Профиль успешно обновлен!"),
         backgroundColor: const Color(0xFFFD5555),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(16),
       ),
     );
 
-    // Возврат к профилю после сохранения
     Future.delayed(const Duration(milliseconds: 1500), () {
       if (context.mounted) {
         context.go('/profile');
@@ -182,67 +214,56 @@ class EditProfilePic extends StatelessWidget {
   const EditProfilePic({
     super.key,
     required this.image,
-    this.isShowPhotoUpload = false,
     this.imageUploadBtnPress,
   });
 
   final String image;
-  final bool isShowPhotoUpload;
   final VoidCallback? imageUploadBtnPress;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      margin: const EdgeInsets.symmetric(vertical: 16.0),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Theme.of(
-            context,
-          ).textTheme.bodyLarge!.color!.withOpacity(0.08),
+    return Align(
+      alignment: Alignment.center,
+      child: SizedBox(
+        height: 120,
+        width: 120,
+        child: Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.expand,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(color: Colors.white, width: 4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(21),
+                child: Image(fit: BoxFit.cover, image: NetworkImage(image)),
+              ),
+            ),
+            Positioned(
+              bottom: -5,
+              right: -5,
+              child: InkWell(
+                onTap: imageUploadBtnPress,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: const Color(0xFFFD5555),
+                  child: const Icon(Icons.edit, color: Colors.white, size: 22),
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-      child: Stack(
-        alignment: Alignment.bottomRight,
-        children: [
-          CircleAvatar(radius: 50, backgroundImage: NetworkImage(image)),
-          InkWell(
-            onTap: imageUploadBtnPress,
-            child: CircleAvatar(
-              radius: 13,
-              backgroundColor: Theme.of(context).primaryColor,
-              child: const Icon(Icons.add, color: Colors.white, size: 20),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class UserInfoEditField extends StatelessWidget {
-  const UserInfoEditField({super.key, required this.text, required this.child});
-
-  final String text;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0 / 2),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Text(text),
-            ),
-          ),
-          Expanded(flex: 3, child: child),
-        ],
       ),
     );
   }

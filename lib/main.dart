@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/screens/auth/auth_selection_screen.dart';
+import 'package:myapp/screens/auth/login_screen.dart';
+import 'package:myapp/screens/auth/phone_login_screen.dart';
 import 'package:myapp/screens/auth/phone_registration_screen.dart';
 import 'package:myapp/screens/auth/phone_verification_screen.dart';
 import 'package:myapp/screens/auth/registration_options_screen.dart';
 import 'package:myapp/screens/favorite_organizator_list.dart';
+import 'package:myapp/screens/favorited_organizators.dart';
 import 'package:myapp/screens/home_screen/attending_events_screen.dart';
 import 'package:myapp/screens/home_screen/event_list_screen.dart' hide Event;
-import 'package:myapp/screens/home_screen/favorited_organizators.dart';
 import 'package:myapp/screens/home_screen/home_screen.dart';
 import 'package:myapp/screens/home_screen/profile.dart';
 import 'package:myapp/screens/my_events/edit_event.dart';
@@ -35,16 +37,43 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: GoogleFonts.abhayaLibre().fontFamily,
         textTheme: GoogleFonts.abhayaLibreTextTheme(textTheme).copyWith(
-          bodyLarge: const TextStyle(fontWeight: FontWeight.w800),
-          bodyMedium: const TextStyle(fontWeight: FontWeight.w800),
-          displayLarge: const TextStyle(fontWeight: FontWeight.w800),
-          displayMedium: const TextStyle(fontWeight: FontWeight.w800),
-          displaySmall: const TextStyle(fontWeight: FontWeight.w800),
-          headlineMedium: const TextStyle(fontWeight: FontWeight.w800),
-          headlineSmall: const TextStyle(fontWeight: FontWeight.w800),
-          titleLarge: const TextStyle(fontWeight: FontWeight.w800),
-          titleMedium: const TextStyle(fontWeight: FontWeight.w800),
-          titleSmall: const TextStyle(fontWeight: FontWeight.w800),
+          bodyLarge: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+          bodyMedium: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 16,
+          ),
+          displayLarge: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 60,
+          ),
+          displayMedium: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 48,
+          ),
+          displaySmall: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 38,
+          ),
+          headlineMedium: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 36,
+          ),
+          headlineSmall: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 26,
+          ),
+          titleLarge: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 24,
+          ),
+          titleMedium: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 18,
+          ),
+          titleSmall: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 16,
+          ),
           labelLarge: const TextStyle(fontWeight: FontWeight.w800),
           labelMedium: const TextStyle(fontWeight: FontWeight.w800),
           labelSmall: const TextStyle(fontWeight: FontWeight.w800),
@@ -136,6 +165,11 @@ final GoRouter _router = GoRouter(
         final event = state.extra as Event;
         return EditEventScreen(event: event);
       },
+    ),
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+    GoRoute(
+      path: '/phone-login',
+      builder: (context, state) => const PhoneLoginScreen(),
     ),
   ],
 );

@@ -7,6 +7,7 @@ class PhoneRegistrationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final phoneController = TextEditingController(text: "+7 (123) 456-78-90");
+    final nameController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -14,7 +15,7 @@ class PhoneRegistrationScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/auth-selection'),
         ),
       ),
       body: Container(
@@ -22,10 +23,7 @@ class PhoneRegistrationScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFFFFFFF),
-              Color(0xFFF6F6F6),
-            ],
+            colors: [Color(0xFFFFFFFF), Color(0xFFF6F6F6)],
           ),
         ),
         child: Padding(
@@ -35,14 +33,38 @@ class PhoneRegistrationScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                'Введите номер телефона',
+                'Введите ваше имя',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'Имя',
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF7FC9FE),
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF00B2FF),
+                      width: 2.0,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 40),
+              const Text(
+                'Введите номер телефона',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
               TextField(
                 controller: phoneController,
                 readOnly: true,

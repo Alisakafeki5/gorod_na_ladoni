@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -10,210 +11,211 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
-  String _selectedLanguage = 'English';
+  String _selectedLanguage = 'Russian'; // Default to Russian
 
   final List<String> _languages = ['English', 'Russian'];
 
   @override
   Widget build(BuildContext context) {
+    final titleTextStyle = GoogleFonts.alegreyaSansSc(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: Colors.black87,
+    );
+    final itemTextStyle = GoogleFonts.alegreyaSansSc(
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: Colors.black87,
+    );
+    final buttonTextStyle = GoogleFonts.alegreyaSansSc(
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: Colors.white,
+    );
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: false,
-        elevation: 0,
-        backgroundColor: const Color(0xFFFD5555),
-        foregroundColor: Colors.white,
-        title: const Text("Settings"),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 24.0),
-
-            // Section: Notifications
-            _buildSectionHeader("Notifications"),
-            _buildNotificationSetting(),
-
-            const SizedBox(height: 24.0),
-
-            // Section: Language
-            _buildSectionHeader("Language"),
-            _buildLanguageSetting(),
-
-            const SizedBox(height: 40.0),
-
-            // Buttons Row
-            _buildButtonsRow(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionHeader(String title) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF333333),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNotificationSetting() {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFFD5555).withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.notifications_outlined,
-              color: Color(0xFFFD5555),
-              size: 24,
-            ),
-            const SizedBox(width: 16.0),
-            Expanded(
-              child: Text(
-                "Push Notifications",
-                style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+      backgroundColor: Colors.lightBlue, // Fallback color
+      body: Stack(
+        children: [
+          // Background Gradient
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.cyan.shade300, Colors.blue.shade500],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
             ),
-            Switch(
-              value: _notificationsEnabled,
-              onChanged: (bool value) {
-                setState(() {
-                  _notificationsEnabled = value;
-                });
-              },
-              activeColor: const Color(0xFFFD5555),
-              activeTrackColor: const Color(0xFFFD5555).withOpacity(0.5),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+          ),
 
-  Widget _buildLanguageSetting() {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFFD5555).withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.language_outlined,
-              color: Color(0xFFFD5555),
-              size: 24,
-            ),
-            const SizedBox(width: 16.0),
-            Expanded(
-              child: Text(
-                "App Language",
-                style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+          // White content card
+          Positioned(
+            top: 100, // Adjusted top position for a settings screen
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 40.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.black54,
+                            ),
+                            onPressed: () => context.go('/profile'),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Text('Настройки', style: titleTextStyle),
+                            ),
+                          ),
+                          const SizedBox(width: 48), // Balance the IconButton
+                        ],
+                      ),
+                      const SizedBox(height: 40),
+
+                      // Settings Items
+                      _buildSettingItem(
+                        icon: Icons.notifications_outlined,
+                        text: 'Push-уведомления',
+                        textStyle: itemTextStyle,
+                        child: Switch(
+                          value: _notificationsEnabled,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _notificationsEnabled = value;
+                            });
+                          },
+                          activeColor: const Color(0xFFFD5555),
+                          activeTrackColor: const Color(
+                            0xFFFD5555,
+                          ).withOpacity(0.5),
+                          inactiveThumbColor: Colors.grey.shade400,
+                          inactiveTrackColor: Colors.grey.shade200,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      _buildSettingItem(
+                        icon: Icons.language_outlined,
+                        text: 'Язык приложения',
+                        textStyle: itemTextStyle,
+                        child: DropdownButton<String>(
+                          value: _selectedLanguage,
+                          underline: const SizedBox(),
+                          iconSize: 28,
+                          iconEnabledColor: const Color(0xFFFD5555),
+                          borderRadius: BorderRadius.circular(12),
+                          items: _languages.map((String language) {
+                            return DropdownMenuItem<String>(
+                              value: language,
+                              child: Text(
+                                language,
+                                style: itemTextStyle.copyWith(fontSize: 16),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            if (newValue != null) {
+                              setState(() {
+                                _selectedLanguage = newValue;
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 60),
+
+                      // Save Button
+                      ElevatedButton(
+                        onPressed: () => _saveSettings(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFD5555),
+                          foregroundColor: Colors.white,
+                          elevation: 5,
+                          shadowColor: const Color(0xFF5C5A5A),
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          'Сохранить настройки',
+                          style: buttonTextStyle,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            DropdownButton<String>(
-              value: _selectedLanguage,
-              underline: const SizedBox(),
-              borderRadius: BorderRadius.circular(12),
-              items: _languages.map((String language) {
-                return DropdownMenuItem<String>(
-                  value: language,
-                  child: Text(language, style: const TextStyle(fontSize: 16)),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  setState(() {
-                    _selectedLanguage = newValue;
-                  });
-                }
-              },
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildButtonsRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        // Cancel Button
-        SizedBox(
-          width: 120,
-          child: ElevatedButton(
-            onPressed: () {
-              // Возврат к профилю без сохранения
-              context.go('/profile');
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(
-                context,
-              ).textTheme.bodyLarge!.color!.withOpacity(0.08),
-              foregroundColor: Colors.grey[800],
-              minimumSize: const Size(double.infinity, 48),
-              shape: const StadiumBorder(),
-            ),
-            child: const Text("Cancel"),
+  Widget _buildSettingItem({
+    required IconData icon,
+    required String text,
+    required TextStyle textStyle,
+    required Widget child,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
           ),
-        ),
-        const SizedBox(width: 16.0),
-
-        // Save Button
-        SizedBox(
-          width: 160,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFD5555),
-              foregroundColor: Colors.white,
-              minimumSize: const Size(double.infinity, 48),
-              shape: const StadiumBorder(),
-            ),
-            onPressed: () {
-              _saveSettings();
-              _showSuccessMessage();
-              // После сохранения возвращаемся к профилю
-              Future.delayed(const Duration(milliseconds: 1500), () {
-                context.go('/profile');
-              });
-            },
-            child: const Text("Save Settings"),
-          ),
-        ),
-      ],
+        ],
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: const Color(0xFFFD5555), size: 24),
+          const SizedBox(width: 16),
+          Expanded(child: Text(text, style: textStyle)),
+          child,
+        ],
+      ),
     );
   }
 
-  void _saveSettings() {
+  void _saveSettings(BuildContext context) {
     // Логика сохранения настроек
     print("Notifications: $_notificationsEnabled");
     print("Selected language: $_selectedLanguage");
-  }
 
-  void _showSuccessMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text("Settings saved successfully!"),
+        content: const Text("Настройки успешно сохранены!"),
         backgroundColor: const Color(0xFFFD5555),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(16),
       ),
     );
+
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (context.mounted) {
+        context.go('/profile');
+      }
+    });
   }
 }

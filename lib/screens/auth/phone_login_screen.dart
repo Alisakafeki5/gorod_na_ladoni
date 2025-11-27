@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class PhoneVerificationScreen extends StatelessWidget {
-  const PhoneVerificationScreen({super.key});
+class PhoneLoginScreen extends StatelessWidget {
+  const PhoneLoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final phoneController = TextEditingController(text: "+7 (123) 456-78-90");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => context.go('/phone-registration'),
+          onPressed: () => context.go('/login'),
         ),
       ),
       body: Container(
@@ -30,23 +32,16 @@ class PhoneVerificationScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                'Введите код из смс',
+                'Войти по номеру телефона',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 40),
               TextField(
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 20, letterSpacing: 10),
-                keyboardType: TextInputType.number,
-                maxLength: 4,
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    context.go('/home');
-                  }
-                },
+                controller: phoneController,
+                readOnly: true,
+                style: const TextStyle(color: Colors.grey),
                 decoration: InputDecoration(
-                  counterText: "",
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: const BorderSide(
@@ -66,7 +61,7 @@ class PhoneVerificationScreen extends StatelessWidget {
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
-                  context.go('/home');
+                  context.go('/phone-verification');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFD5555),
@@ -78,7 +73,7 @@ class PhoneVerificationScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text('Далее'),
+                child: const Text('Войти'),
               ),
             ],
           ),

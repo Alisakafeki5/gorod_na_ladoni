@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -7,16 +8,22 @@ class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key, required this.selectedIndex});
 
   void _onItemTapped(BuildContext context, int index) {
-    if (index == 1) {
-      context.go('/event-list');
-    } else if (index == 2) {
-      context.go('/attending-events');
-    } else if (index == 3) {
-      context.go('/favorites');
-    } else if (index == 4) {
-      context.go('/profile');
-    } else if (index == 0) {
-      context.go('/home');
+    switch (index) {
+      case 0:
+        context.go('/home');
+        break;
+      case 1:
+        context.go('/attending-events');
+        break;
+      case 2:
+        context.go('/my-events');
+        break;
+      case 3:
+        context.go('/favorites');
+        break;
+      case 4:
+        context.go('/profile');
+        break;
     }
   }
 
@@ -29,16 +36,33 @@ class CustomBottomNavigationBar extends StatelessWidget {
       showSelectedLabels: false,
       showUnselectedLabels: false,
       selectedItemColor: const Color(0xFF7FC9FE),
-      unselectedItemColor: Colors.grey,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
+      unselectedItemColor: const Color(0xFF7FC9FE),
+      items: [
+        const BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add_box_outlined),
+          icon: SvgPicture.asset(
+            'assets/images/hands.svg',
+            width: 24,
+            height: 24,
+          ),
           label: '',
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            'assets/images/button.svg',
+            width: 24,
+            height: 24,
+          ),
+          label: '',
+        ),
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.favorite_border),
+          label: '',
+        ),
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          label: '',
+        ),
       ],
     );
   }

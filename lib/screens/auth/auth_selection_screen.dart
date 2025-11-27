@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class AuthSelectionScreen extends StatelessWidget {
   const AuthSelectionScreen({super.key});
@@ -15,11 +14,7 @@ class AuthSelectionScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                'assets/images/logo.svg',
-                height: 90,
-                width: 90,
-              ),
+              SvgPicture.asset('assets/images/logo.svg', height: 90, width: 90),
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
@@ -35,10 +30,12 @@ class AuthSelectionScreen extends StatelessWidget {
                 child: const Text('Создать аккаунт'),
               ),
               const SizedBox(height: 20),
-               TextButton(
-                    onPressed: () {},
-                    child: const Text('Уже есть аккаунт'),
-                  ),
+              TextButton(
+                onPressed: () {
+                  context.go('/login');
+                },
+                child: const Text('Уже есть аккаунт'),
+              ),
             ],
           ),
         ),
