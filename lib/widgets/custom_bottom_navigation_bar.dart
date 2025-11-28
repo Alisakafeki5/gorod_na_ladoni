@@ -16,7 +16,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         context.go('/attending-events');
         break;
       case 2:
-        context.go('/my-events');
+        context.go('/event-list');
         break;
       case 3:
         context.go('/favorites');
@@ -55,14 +55,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
           ),
           label: '',
         ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_border),
-          label: '',
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          label: '',
-        ),
+        const BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
+        const BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
       ],
     );
   }

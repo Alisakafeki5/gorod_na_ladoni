@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../home_screen/attending_events_screen.dart';
+import '../models/event.dart';
 
 class EditEventScreen extends StatefulWidget {
   final Event event;

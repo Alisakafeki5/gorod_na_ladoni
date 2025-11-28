@@ -13,6 +13,7 @@ import 'package:myapp/screens/home_screen/attending_events_screen.dart';
 import 'package:myapp/screens/home_screen/event_list_screen.dart' hide Event;
 import 'package:myapp/screens/home_screen/home_screen.dart';
 import 'package:myapp/screens/home_screen/profile.dart';
+import 'package:myapp/screens/models/event.dart';
 import 'package:myapp/screens/my_events/edit_event.dart';
 import 'package:myapp/screens/my_events/my_events.dart';
 import 'package:myapp/screens/my_events/new_event.dart';

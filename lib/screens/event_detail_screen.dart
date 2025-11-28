@@ -4,36 +4,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EventDetailScreen extends StatelessWidget {
-  const EventDetailScreen({super.key});
+import 'models/event.dart';
 
-  // Function to show the confirmation dialog
+class EventDetailScreen extends StatelessWidget {
+  final Event event;
+
+  const EventDetailScreen({super.key, required this.event});
+
+  // ———————————————— DIALOGS ————————————————
+
   void _showConfirmationDialog(BuildContext context) {
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierLabel: 'Close',
       barrierColor: Colors.black.withAlpha(128),
       transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder:
-          (
-            BuildContext buildContext,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-              child: Center(
-                child: _buildDialog(context, () {
-                  Navigator.of(context).pop(); // Close the confirmation dialog
-                  _showSuccessDialog(context);
-                }),
-              ),
-            );
-          },
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(opacity: animation, child: child);
+      pageBuilder: (_, __, ___) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          child: Center(
+            child: _buildDialog(context, () {
+              Navigator.of(context).pop();
+              _showSuccessDialog(context);
+            }),
+          ),
+        );
       },
+      transitionBuilder: (_, animation, __, child) =>
+          FadeTransition(opacity: animation, child: child),
     );
   }
 
@@ -41,117 +40,64 @@ class EventDetailScreen extends StatelessWidget {
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierLabel: 'Close',
       barrierColor: Colors.black.withAlpha(128),
       transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder:
-          (
-            BuildContext buildContext,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-              child: Center(child: _buildSuccessDialogContent(context)),
-            );
-          },
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(opacity: animation, child: child);
+      pageBuilder: (_, __, ___) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          child: Center(child: _buildSuccessDialogContent(context)),
+        );
       },
+      transitionBuilder: (_, animation, __, child) =>
+          FadeTransition(opacity: animation, child: child),
     );
   }
+
+  // ———————————————— SUCCESS DIALOG ————————————————
 
   Widget _buildSuccessDialogContent(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      padding: const EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(26),
-            spreadRadius: 5,
-            blurRadius: 7,
-          ),
-        ],
-      ),
+    return DialogContainer(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SvgPicture.asset('assets/images/hands.svg', height: 60),
           const SizedBox(height: 16),
-          DefaultTextStyle(
+          Text(
+            'Событие добавлено',
             style: GoogleFonts.alegreyaSansSc(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
             ),
-            child: const Text('Событие добавлено'),
           ),
           const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(), // Close dialog
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFD5555), // Red
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-            ),
-            child: const Text('Ок'),
-          ),
+          _redButton(context, 'Ок', () => Navigator.of(context).pop()),
         ],
       ),
     );
   }
 
-  // Builds the content of the dialog
+  // ———————————————— CONFIRM DIALOG ————————————————
+
   Widget _buildDialog(BuildContext context, VoidCallback onConfirm) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      padding: const EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(26),
-            spreadRadius: 5,
-            blurRadius: 7,
-          ),
-        ],
-      ),
+    return DialogContainer(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SvgPicture.asset('assets/images/hands.svg', height: 60),
           const SizedBox(height: 16),
-          DefaultTextStyle(
+          Text(
+            'Добавить событие?',
             style: GoogleFonts.alegreyaSansSc(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
             ),
-            child: const Text('Добавить событие?'),
           ),
           const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: onConfirm,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFD5555), // Red
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-            ),
-            child: const Text('Добавить'),
-          ),
+          _redButton(context, 'Добавить', onConfirm),
           const SizedBox(height: 12),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(), // Close dialog
+            onPressed: () => Navigator.of(context).pop(),
             style: TextButton.styleFrom(
               backgroundColor: const Color(0xFFEEEEEE),
               shape: RoundedRectangleBorder(
@@ -169,6 +115,8 @@ class EventDetailScreen extends StatelessWidget {
     );
   }
 
+  // ———————————————— MAIN UI ————————————————
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,15 +125,18 @@ class EventDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // ————————— Image —————————
             Stack(
               children: [
-                Container(
+                SizedBox(
                   height: 250,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFEEEEEE), // Placeholder color
+                  child: Image.network(
+                    event.imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.image, size: 100, color: Colors.grey),
                   ),
-                  child: const Icon(Icons.image, size: 100, color: Colors.grey),
                 ),
                 Positioned(
                   top: 40,
@@ -195,66 +146,34 @@ class EventDetailScreen extends StatelessWidget {
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
-                Positioned(
-                  top: 40,
-                  right: 16,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.notifications_none,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      // Notification button action
-                    },
-                  ),
-                ),
               ],
             ),
+
+            // ————————— Content —————————
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      _buildTag(
-                        'Важная информация',
-                        const Color(0xFFFFCDD2),
-                        const Color(0xFFFF5353),
-                      ),
-                      const SizedBox(width: 8),
-                      _buildTag(
-                        'Важная информация',
-                        const Color(0xFFFFCDD2),
-                        const Color(0xFFFF5353),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
+                  _buildTag('Событие', const Color(0xFFFFCDD2), Colors.red),
+                  const SizedBox(height: 12),
                   Text(
-                    'НАЗВАНИЕ',
+                    event.title,
                     style: GoogleFonts.alegreyaSansSc(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 24),
+
                   _buildInfoCard(),
+
                   const SizedBox(height: 24),
-                  Row(
-                    children: [
-                      _buildTag(
-                        'Полезная информация',
-                        const Color(0xFFEEEEEE),
-                        Colors.black,
-                      ),
-                      const SizedBox(width: 8),
-                      _buildTag(
-                        'Полезная информация',
-                        const Color(0xFFEEEEEE),
-                        Colors.black,
-                      ),
-                    ],
+                  _buildTag('Описание', const Color(0xFFEEEEEE), Colors.black),
+                  const SizedBox(height: 12),
+                  Text(
+                    event.description,
+                    style: GoogleFonts.alegreyaSansSc(fontSize: 16),
                   ),
                 ],
               ),
@@ -262,40 +181,21 @@ class EventDetailScreen extends StatelessWidget {
           ],
         ),
       ),
+
+      // ————————— Bottom Buttons —————————
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ElevatedButton(
               onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF81D4FA), // Light blue
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 12,
-                ),
-              ),
+              style: _buttonStyle(const Color(0xFF81D4FA)),
               child: const Text('В избранное'),
             ),
             ElevatedButton(
-              onPressed: () =>
-                  _showConfirmationDialog(context), // Show the dialog on press
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFD5555), // Red
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 12,
-                ),
-              ),
+              onPressed: () => _showConfirmationDialog(context),
+              style: _buttonStyle(const Color(0xFFFD5555)),
               child: const Text('Добавить событие'),
             ),
           ],
@@ -304,16 +204,18 @@ class EventDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTag(String label, Color? color, Color? textColor) {
+  // ————————————— ADDITIONAL UI —————————————
+
+  Widget _buildTag(String text, Color bg, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(4),
+        color: bg,
+        borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
-        label,
-        style: GoogleFonts.alegreyaSansSc(fontSize: 12, color: textColor),
+        text,
+        style: GoogleFonts.alegreyaSansSc(color: color, fontSize: 12),
       ),
     );
   }
@@ -323,66 +225,25 @@ class EventDetailScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFF4F4F4),
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withAlpha(51),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildInfoRow('ДАТА И ВРЕМЯ:', '...'),
-                _buildInfoRow('АДРЕС:', '...'),
-                _buildInfoRow('СТОИМОСТЬ:', '...'),
-                _buildInfoRow('КОЛ-ВО УЧАСТНИКОВ:', '...'),
-                _buildInfoRow('ОРГАНИЗАТОР:', '...'),
-              ],
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16.0),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'ОПИСАНИЕ',
-                  style: GoogleFonts.alegreyaSansSc(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Здесь будет подробное описание события, которое может занимать несколько строк.',
-                  style: GoogleFonts.alegreyaSansSc(height: 1.5),
-                ),
-              ],
-            ),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _infoRow('Дата и время:', event.dateTime),
+            _infoRow('Адрес:', event.address),
+            _infoRow('Стоимость:', event.cost),
+            _infoRow('Участников:', event.participants),
+            _infoRow('Организатор:', 'Не указано'),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _infoRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -393,6 +254,56 @@ class EventDetailScreen extends StatelessWidget {
           Text(value, style: GoogleFonts.alegreyaSansSc()),
         ],
       ),
+    );
+  }
+
+  // ————————— Utility Widgets —————————
+
+  ButtonStyle _buttonStyle(Color bg) => ElevatedButton.styleFrom(
+    backgroundColor: bg,
+    foregroundColor: Colors.white,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+  );
+
+  Widget _redButton(BuildContext context, String text, VoidCallback onTap) {
+    return ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFFFD5555),
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+      ),
+      child: Text(text),
+    );
+  }
+}
+
+// ————————————— REUSABLE DIALOG WRAPPER —————————————
+
+class DialogContainer extends StatelessWidget {
+  final Widget child;
+
+  const DialogContainer({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.82,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(26),
+            blurRadius: 7,
+            spreadRadius: 5,
+          ),
+        ],
+      ),
+      child: child,
     );
   }
 }

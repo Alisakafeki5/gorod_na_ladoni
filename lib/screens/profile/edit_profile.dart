@@ -2,29 +2,98 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Edit Profile App',
+      theme: ThemeData(
+        // Основная тема с шрифтом Alegreya Sans SC
+        textTheme: GoogleFonts.alegreyaSansScTextTheme(
+          Theme.of(context).textTheme,
+        ),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFFD5555),
+          primary: const Color(0xFFFD5555),
+          secondary: Colors.blue.shade500,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.grey.shade100,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20.0,
+            vertical: 16.0,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFFD5555), width: 2),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFD5555),
+            foregroundColor: Colors.white,
+            elevation: 5,
+            shadowColor: const Color(0xFF5C5A5A),
+            minimumSize: const Size(double.infinity, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            textStyle: GoogleFonts.alegreyaSansSc(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        snackBarTheme: SnackBarThemeData(
+          backgroundColor: const Color(0xFFFD5555),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          contentTextStyle: GoogleFonts.alegreyaSansSc(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+      ),
+      home: const EditProfileScreen(),
+    );
+  }
+}
+
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final titleTextStyle = GoogleFonts.alegreyaSansSc(
-      fontSize: 24,
+    // Получаем стили из темы
+    final titleTextStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
       fontWeight: FontWeight.bold,
       color: Colors.black87,
     );
-    final labelTextStyle = GoogleFonts.alegreyaSansSc(
-      fontSize: 16,
+
+    final labelTextStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
       fontWeight: FontWeight.w500,
       color: Colors.black54,
     );
-    final buttonTextStyle = GoogleFonts.alegreyaSansSc(
-      fontSize: 18,
-      fontWeight: FontWeight.w500,
-      color: Colors.white,
-    );
 
     return Scaffold(
-      backgroundColor: Colors.lightBlue, // Fallback color
+      backgroundColor: Colors.lightBlue,
       body: Stack(
         children: [
           // Background Gradient
@@ -79,6 +148,7 @@ class EditProfileScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 30),
+
                       // Form
                       Form(
                         child: Column(
@@ -86,12 +156,16 @@ class EditProfileScreen extends StatelessWidget {
                           children: [
                             Text('Никнейм', style: labelTextStyle),
                             const SizedBox(height: 8),
-                            _buildTextFormField(initialValue: 'annette_black'),
+                            _buildTextFormField(
+                              context,
+                              initialValue: 'annette_black',
+                            ),
 
                             const SizedBox(height: 20),
                             Text('Контакты', style: labelTextStyle),
                             const SizedBox(height: 8),
                             _buildTextFormField(
+                              context,
                               initialValue:
                                   'annette@gmail.com, +1 (316) 555-0116',
                               hintText: 'Email, телефон, социальные сети...',
@@ -102,6 +176,7 @@ class EditProfileScreen extends StatelessWidget {
                             Text('Интересы', style: labelTextStyle),
                             const SizedBox(height: 8),
                             _buildTextFormField(
+                              context,
                               initialValue: 'Путешествия, фотография, чтение',
                               hintText: 'Ваши увлечения и интересы...',
                               maxLines: 2,
@@ -111,6 +186,7 @@ class EditProfileScreen extends StatelessWidget {
                             Text('О себе', style: labelTextStyle),
                             const SizedBox(height: 8),
                             _buildTextFormField(
+                              context,
                               initialValue:
                                   'Люблю путешествовать и фотографировать природу. Увлекаюсь чтением книг и изучением новых культур.',
                               hintText: 'Расскажите о себе...',
@@ -120,23 +196,11 @@ class EditProfileScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 40),
+
                       // Save Button
                       ElevatedButton(
                         onPressed: () => _showSuccessMessage(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFD5555),
-                          foregroundColor: Colors.white,
-                          elevation: 5,
-                          shadowColor: const Color(0xFF5C5A5A),
-                          minimumSize: const Size(double.infinity, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          'Сохранить изменения',
-                          style: buttonTextStyle,
-                        ),
+                        child: const Text('Сохранить изменения'),
                       ),
                     ],
                   ),
@@ -159,7 +223,8 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextFormField({
+  Widget _buildTextFormField(
+    BuildContext context, {
     required String initialValue,
     String? hintText,
     int maxLines = 1,
@@ -167,40 +232,21 @@ class EditProfileScreen extends StatelessWidget {
     return TextFormField(
       initialValue: initialValue,
       maxLines: maxLines,
+      style: GoogleFonts.alegreyaSansSc(fontSize: 16, color: Colors.black87),
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.grey.shade100,
         hintText: hintText,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20.0,
-          vertical: 16.0,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFFD5555), width: 2),
+        hintStyle: GoogleFonts.alegreyaSansSc(
+          fontSize: 16,
+          color: Colors.grey.shade600,
         ),
       ),
     );
   }
 
   void _showSuccessMessage(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text("Профиль успешно обновлен!"),
-        backgroundColor: const Color(0xFFFD5555),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        margin: const EdgeInsets.all(16),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("Профиль успешно обновлен!")));
 
     Future.delayed(const Duration(milliseconds: 1500), () {
       if (context.mounted) {
