@@ -7,7 +7,6 @@ import 'package:myapp/screens/auth/phone_login_screen.dart';
 import 'package:myapp/screens/auth/phone_registration_screen.dart';
 import 'package:myapp/screens/auth/phone_verification_screen.dart';
 import 'package:myapp/screens/auth/registration_options_screen.dart';
-import 'package:myapp/screens/favorite_organizator_list.dart';
 import 'package:myapp/screens/favorited_organizators.dart';
 import 'package:myapp/screens/home_screen/attending_events_screen.dart';
 import 'package:myapp/screens/home_screen/event_list_screen.dart' hide Event;
@@ -132,13 +131,6 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/favorites',
       builder: (context, state) => const FavoriteOrganizersScreen(),
-    ),
-    GoRoute(
-      path: '/organizer-profile',
-      builder: (context, state) {
-        final organizer = state.extra as Organizer;
-        return OrganizerEventsScreen(organizer: organizer);
-      },
     ),
     GoRoute(
       path: '/profile',
