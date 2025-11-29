@@ -19,16 +19,6 @@ class _FavoriteOrganizersScreenState extends State<FavoriteOrganizersScreen> {
       lastName: "Иванова",
       photoUrl: "https://i.pravatar.cc/150?img=1",
     ),
-    Organizer(
-      firstName: "Петр",
-      lastName: "Сидоров",
-      photoUrl: "https://i.pravatar.cc/150?img=2",
-    ),
-    Organizer(
-      firstName: "Мария",
-      lastName: "Кузнецова",
-      photoUrl: "https://i.pravatar.cc/150?img=3",
-    ),
   ];
 
   @override

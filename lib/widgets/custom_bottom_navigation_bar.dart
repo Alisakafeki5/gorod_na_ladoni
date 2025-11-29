@@ -10,13 +10,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        context.go('/home');
+        context.go('/event-list');
         break;
       case 1:
         context.go('/attending-events');
         break;
       case 2:
-        context.go('/event-list');
+        context.go('/home');
         break;
       case 3:
         context.go('/favorites');
@@ -38,7 +38,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
       selectedItemColor: const Color(0xFF7FC9FE),
       unselectedItemColor: const Color(0xFF7FC9FE),
       items: [
-        const BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_month),
+          label: '',
+        ),
         BottomNavigationBarItem(
           icon: SvgPicture.asset(
             'assets/images/hands.svg',
@@ -55,7 +58,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
           ),
           label: '',
         ),
-        const BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.star_rounded),
+          label: '',
+        ),
         const BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
       ],
     );

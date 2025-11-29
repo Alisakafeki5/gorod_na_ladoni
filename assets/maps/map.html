@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://api-maps.yandex.ru/v3/?apikey=a4baa0df-dc20-413f-8b25-b302fa69cf05&lang=ru_RU"></script>
+
+    <style>
+        html, body, #map {
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<script>
+    window.onload = async () => {
+      await ymaps3.ready;
+
+      // Более явный импорт
+      const map = new ymaps3.YMap(document.getElementById('map'), {
+        location: {
+          center: [37.620393, 55.75396],
+          zoom: 10
+        }
+      });
+
+      map.addChild(new ymaps3.YMapDefaultSchemeLayer());
+      map.addChild(new ymaps3.YMapDefaultFeaturesLayer());
+    };
+</script>
+</body>
+</html>

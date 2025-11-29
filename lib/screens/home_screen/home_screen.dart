@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:myapp/widgets/custom_bottom_navigation_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,27 +18,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screenContent = [
-      Container(
-        color: Colors.grey[200],
-        child: const Center(
-          child: Text(
-            'Map Placeholder',
-            style: TextStyle(fontSize: 24, color: Colors.grey),
-          ),
+      // --------------------- MAP HERE ---------------------
+      FlutterMap(
+        options: const MapOptions(
+          initialCenter: LatLng(59.9311, 30.3609), // Санкт-Петербург
+          initialZoom: 13,
         ),
+        children: [
+          TileLayer(
+            urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            subdomains: const ['a', 'b', 'c'],
+            userAgentPackageName: 'com.example.myapp',
+          ),
+        ],
       ),
-      Container(), // For Event List Screen
+
+      // ----------------------------------------------------
+      Container(), // Event List
       const Center(child: Text('Add Screen')),
-      Container(), // For Favorite Organizers
+      Container(), // Favorite Organizers
       const Center(child: Text('Profile Screen')),
     ];
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(
-          kToolbarHeight + 24,
-        ), // AppBar height + padding
+        preferredSize: const Size.fromHeight(kToolbarHeight + 24),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -68,9 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.black54,
                       size: 30,
                     ),
-                    onPressed: () {
-                      // Notifications action
-                    },
+                    onPressed: () {},
                     tooltip: 'Уведомления',
                   ),
                 ],
@@ -87,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSearchBar() {
-    const a = Color(0xFF89CFF0); // Light blue color
+    const a = Color(0xFF89CFF0);
 
     return Container(
       height: 45,
@@ -98,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.grey.withOpacity(0.3),
             spreadRadius: 1,
             blurRadius: 4,
-            offset: const Offset(0, 2), // changes position of shadow
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -126,9 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 IconButton(
                   padding: const EdgeInsets.only(right: 12.0),
                   icon: const Icon(Icons.tune, color: a, size: 24),
-                  onPressed: () {
-                    // Filter action
-                  },
+                  onPressed: () {},
                   tooltip: 'Фильтры',
                 ),
               ],
