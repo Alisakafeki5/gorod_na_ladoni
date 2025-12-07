@@ -29,41 +29,47 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: selectedIndex,
-      onTap: (index) => _onItemTapped(context, index),
-      type: BottomNavigationBarType.fixed,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      selectedItemColor: const Color(0xFF7FC9FE),
-      unselectedItemColor: const Color(0xFF7FC9FE),
-      items: [
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.calendar_month),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            'assets/images/hands.svg',
-            width: 24,
-            height: 24,
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(top: BorderSide(color: Color(0xFF7FC9FE), width: 2)),
+      ),
+      child: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        onTap: (index) => _onItemTapped(context, index),
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedItemColor: const Color(0xFF7FC9FE),
+        unselectedItemColor: const Color(0xFF7FC9FE),
+        iconSize: 40,
+        items: [
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month),
+            label: '',
           ),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            'assets/images/button.svg',
-            width: 24,
-            height: 24,
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/images/hands.svg',
+              width: 40,
+              height: 40,
+            ),
+            label: '',
           ),
-          label: '',
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.star_rounded),
-          label: '',
-        ),
-        const BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-      ],
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/images/button.svg',
+              width: 40,
+              height: 40,
+            ),
+            label: '',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.star_rounded),
+            label: '',
+          ),
+          const BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+        ],
+      ),
     );
   }
 }

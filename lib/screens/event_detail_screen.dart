@@ -54,68 +54,71 @@ class EventDetailScreen extends StatelessWidget {
     );
   }
 
-  // ———————————————— SUCCESS DIALOG ————————————————
-
   Widget _buildSuccessDialogContent(BuildContext context) {
     return DialogContainer(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset('assets/images/hands.svg', height: 60),
-          const SizedBox(height: 16),
-          Text(
-            'Событие добавлено',
-            style: GoogleFonts.alegreyaSansSc(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
+      child: DefaultTextStyle(
+        style: GoogleFonts.alegreyaSansSc(fontSize: 16, color: Colors.black),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset('assets/images/hands.svg', height: 60),
+            const SizedBox(height: 16),
+            Text(
+              'Событие добавлено',
+              style: GoogleFonts.alegreyaSansSc(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
-          _redButton(context, 'Ок', () => Navigator.of(context).pop()),
-        ],
+            const SizedBox(height: 24),
+            _redButton(context, 'Ок', () => Navigator.of(context).pop()),
+          ],
+        ),
       ),
     );
   }
-
-  // ———————————————— CONFIRM DIALOG ————————————————
 
   Widget _buildDialog(BuildContext context, VoidCallback onConfirm) {
     return DialogContainer(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset('assets/images/hands.svg', height: 60),
-          const SizedBox(height: 16),
-          Text(
-            'Добавить событие?',
-            style: GoogleFonts.alegreyaSansSc(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 24),
-          _redButton(context, 'Добавить', onConfirm),
-          const SizedBox(height: 12),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            style: TextButton.styleFrom(
-              backgroundColor: const Color(0xFFEEEEEE),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+      child: DefaultTextStyle(
+        style: GoogleFonts.alegreyaSansSc(fontSize: 16, color: Colors.black),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset('assets/images/hands.svg', height: 60),
+            const SizedBox(height: 16),
+            Text(
+              'Добавить событие?',
+              style: GoogleFonts.alegreyaSansSc(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
             ),
-            child: const Text(
-              'Отмена',
-              style: TextStyle(color: Color(0xFF616161)),
+            const SizedBox(height: 24),
+            _redButton(context, 'Добавить', onConfirm),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              style: TextButton.styleFrom(
+                backgroundColor: const Color(0xFFEEEEEE),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50,
+                  vertical: 15,
+                ),
+              ),
+              child: const Text(
+                'Отмена',
+                style: TextStyle(color: Color(0xFF616161)),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
-
-  // ———————————————— MAIN UI ————————————————
 
   @override
   Widget build(BuildContext context) {

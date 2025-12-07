@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+  final VoidCallback onComplete;
+
+  const OnboardingScreen({super.key, required this.onComplete});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -28,7 +28,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: 3, // 3 onboarding pages
+                itemCount: 3,
                 onPageChanged: (int page) {
                   setState(() {
                     _currentPage = page;
@@ -41,6 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(20.0),
                     ),
+                    // Здесь будут только изображения, без текста
                   );
                 },
               ),
@@ -52,11 +53,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   duration: const Duration(milliseconds: 300),
                   height: 10,
                   width: _currentPage == index ? 30 : 10,
-                  margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 30),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 30,
+                  ),
                   decoration: BoxDecoration(
-                    color: _currentPage == index
-                        ? Colors.black
-                        : Colors.grey, 
+                    color: _currentPage == index ? Colors.black : Colors.grey,
                     borderRadius: BorderRadius.circular(5),
                   ),
                 );
@@ -69,7 +71,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      context.go('/auth-selection');
+                      // Вызываем колбэк при завершении
+                      widget.onComplete();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFD5555),
@@ -87,7 +90,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           curve: Curves.ease,
                         );
                       } else {
-                        context.go('/auth-selection');
+                        // Вызываем колбэк при завершении
+                        widget.onComplete();
                       }
                     },
                     style: ElevatedButton.styleFrom(

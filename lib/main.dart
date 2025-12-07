@@ -18,21 +18,32 @@ import 'package:myapp/screens/my_events/my_events.dart';
 import 'package:myapp/screens/my_events/new_event.dart';
 import 'package:myapp/screens/onboarding_screen.dart';
 import 'package:myapp/screens/profile/edit_profile.dart';
+import 'package:myapp/screens/profile/organizer_profile_screen.dart';
 import 'package:myapp/screens/profile/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
+const String _onboardingShownKey = 'onboarding_shown';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = await SharedPreferences.getInstance();
+  final onboardingShown = prefs.getBool(_onboardingShownKey) ?? false;
+
+  runApp(MyApp(onboardingShown: onboardingShown));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool onboardingShown;
+
+  const MyApp({super.key, required this.onboardingShown});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return MaterialApp.router(
-      title: 'Flutter Demo',
+      title: 'Gorod Na Ladoni',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: GoogleFonts.abhayaLibre().fontFamily,
@@ -89,80 +100,111 @@ class MyApp extends StatelessWidget {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
         ),
       ),
-      routerConfig: _router,
+      // ВЫЗЫВАЕМ функцию _router с параметром onboardingShown
+      routerConfig: _router(onboardingShown),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-final GoRouter _router = GoRouter(
-  initialLocation: '/home',
-  routes: [
-    GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
-    GoRoute(
-      path: '/onboarding',
-      builder: (context, state) => const OnboardingScreen(),
-    ),
-    GoRoute(
-      path: '/auth-selection',
-      builder: (context, state) => const AuthSelectionScreen(),
-    ),
-    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
-    GoRoute(
-      path: '/register-options',
-      builder: (context, state) => const RegistrationOptionsScreen(),
-    ),
-    GoRoute(
-      path: '/phone-registration',
-      builder: (context, state) => const PhoneRegistrationScreen(),
-    ),
-    GoRoute(
-      path: '/phone-verification',
-      builder: (context, state) => const PhoneVerificationScreen(),
-    ),
-    GoRoute(
-      path: '/event-list',
-      builder: (context, state) => const EventListScreen(),
-    ),
-    GoRoute(
-      path: '/attending-events',
-      builder: (context, state) => const AttendingEventsScreen(),
-    ),
-    GoRoute(
-      path: '/favorites',
-      builder: (context, state) => const FavoriteOrganizersScreen(),
-    ),
-    GoRoute(
-      path: '/profile',
-      builder: (context, state) => const ProfileScreen(),
-    ),
-    GoRoute(
-      path: '/edit_profile',
-      builder: (context, state) => const EditProfileScreen(),
-    ),
-    GoRoute(
-      path: '/settings',
-      builder: (context, state) => const SettingsScreen(),
-    ),
-    GoRoute(
-      path: '/my-events',
-      builder: (context, state) => const MyEventsScreen(),
-    ),
-    GoRoute(
-      path: '/add-event',
-      builder: (context, state) => const AddEventScreen(),
-    ),
-    GoRoute(
-      path: '/edit-event',
-      builder: (context, state) {
-        final event = state.extra as Event;
-        return EditEventScreen(event: event);
-      },
-    ),
-    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-    GoRoute(
-      path: '/phone-login',
-      builder: (context, state) => const PhoneLoginScreen(),
-    ),
-  ],
-);
+GoRouter _router(bool onboardingShown) {
+  return GoRouter(
+    // Устанавливаем начальный маршрут в зависимости от того, был ли показан onboarding
+    initialLocation: onboardingShown ? '/home' : '/onboarding',
+    routes: [
+      GoRoute(
+        path: '/',
+        redirect: (context, state) {
+          // Редирект на соответствующий экран
+          return onboardingShown ? '/home' : '/onboarding';
+        },
+      ),
+      GoRoute(
+        path: '/onboarding',
+        builder: (context, state) => OnboardingScreen(
+          onComplete: () async {
+            // Сохраняем, что onboarding был показан
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setBool(_onboardingShownKey, true);
+
+            // Переходим на главный экран
+            context.go('/home');
+          },
+        ),
+      ),
+      GoRoute(
+        path: '/auth-selection',
+        builder: (context, state) => const AuthSelectionScreen(),
+      ),
+      GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+      GoRoute(
+        path: '/register-options',
+        builder: (context, state) => const RegistrationOptionsScreen(),
+      ),
+      GoRoute(
+        path: '/phone-registration',
+        builder: (context, state) => const PhoneRegistrationScreen(),
+      ),
+      GoRoute(
+        path: '/phone-verification',
+        builder: (context, state) => const PhoneVerificationScreen(),
+      ),
+      GoRoute(
+        path: '/event-list',
+        builder: (context, state) => const EventListScreen(),
+      ),
+      GoRoute(
+        path: '/attending-events',
+        builder: (context, state) => const AttendingEventsScreen(),
+      ),
+      GoRoute(
+        path: '/favorites',
+        builder: (context, state) => const FavoriteOrganizersScreen(),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/edit_profile',
+        builder: (context, state) => const EditProfileScreen(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/my-events',
+        builder: (context, state) => const MyEventsScreen(),
+      ),
+      GoRoute(
+        path: '/add-event',
+        builder: (context, state) => const AddEventScreen(),
+      ),
+      GoRoute(
+        path: '/edit-event',
+        builder: (context, state) {
+          final event = state.extra as Event;
+          return EditEventScreen(event: event);
+        },
+      ),
+      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+      GoRoute(
+        path: '/phone-login',
+        builder: (context, state) => const PhoneLoginScreen(),
+      ),
+      GoRoute(
+        path: '/fav_organizer',
+        builder: (context, state) {
+          final data = state.extra as Map;
+
+          return OrganizerProfileScreen(
+            name: data["name"],
+            phone: data["phone"],
+            photoUrl: data["photo"],
+          );
+        },
+      ),
+    ],
+  );
+}

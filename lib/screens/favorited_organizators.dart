@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/widgets/custom_bottom_navigation_bar.dart';
+import 'package:myapp/widgets/home_appbar_top.dart';
 
 class FavoriteOrganizersScreen extends StatefulWidget {
   const FavoriteOrganizersScreen({super.key});
@@ -12,7 +13,6 @@ class FavoriteOrganizersScreen extends StatefulWidget {
 }
 
 class _FavoriteOrganizersScreenState extends State<FavoriteOrganizersScreen> {
-  /// Здесь в будущем будут данные из базы
   final List<Organizer> favoriteOrganizers = [
     Organizer(
       firstName: "Анна",
@@ -23,53 +23,72 @@ class _FavoriteOrganizersScreenState extends State<FavoriteOrganizersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final titleTextStyle = GoogleFonts.alegreyaSansSc(
-      fontSize: 28,
-      fontWeight: FontWeight.bold,
-      color: Colors.white,
-    );
-
     return Scaffold(
-      backgroundColor: Colors.blue.shade500, // Fallback color
-      body: Stack(
+      backgroundColor: Colors.white,
+
+      // -----------------------------
+      //      УБИРАЕМ APPBar
+      // -----------------------------
+      appBar: null,
+
+      body: Column(
         children: [
-          // Background Gradient
+          // -----------------------------
+          //      ТВОЙ ВЕРХНИЙ ВИДЖЕТ
+          // -----------------------------
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.cyan.shade300, Colors.blue.shade500],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  spreadRadius: 1,
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: const HomeAppBarTop(
+              searchBar: SizedBox.shrink(), // ПУСТО вместо поиска
             ),
           ),
 
-          // Title
-          Positioned(
-            top: 60,
-            left: 20,
-            right: 20,
+          // Верхнее преграждение цветом #7FC9FE
+          Container(
+            height: 2.0,
+            color: const Color(0xFF7FC9FE),
+            width: double.infinity,
+          ),
+
+          // Заголовок "Избранные Организаторы" по центру
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            alignment: Alignment.center,
             child: Text(
-              'Избранные организаторы',
-              style: titleTextStyle,
-              textAlign: TextAlign.center,
+              'Избранные Организаторы',
+              style: GoogleFonts.alegreyaSansSc(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ),
 
-          // White content card
-          Positioned(
-            top: 140,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-              ),
+          // Нижнее преграждение цветом #7FC9FE
+          Container(
+            height: 2.0,
+            color: const Color(0xFF7FC9FE),
+            width: double.infinity,
+          ),
+
+          // -----------------------------
+          //           СПИСОК
+          // -----------------------------
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
               child: favoriteOrganizers.isNotEmpty
                   ? ListView.builder(
-                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 100),
                       itemCount: favoriteOrganizers.length,
                       itemBuilder: (context, index) {
                         return OrganizerCard(
@@ -78,14 +97,11 @@ class _FavoriteOrganizersScreenState extends State<FavoriteOrganizersScreen> {
                       },
                     )
                   : Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 40),
-                        child: Text(
-                          'Добавьте организаторов в избранное',
-                          style: GoogleFonts.alegreyaSansSc(
-                            color: Colors.grey,
-                            fontSize: 18,
-                          ),
+                      child: Text(
+                        'Добавьте организаторов в избранное',
+                        style: GoogleFonts.alegreyaSansSc(
+                          color: Colors.grey,
+                          fontSize: 18,
                         ),
                       ),
                     ),
@@ -93,14 +109,12 @@ class _FavoriteOrganizersScreenState extends State<FavoriteOrganizersScreen> {
           ),
         ],
       ),
+
       bottomNavigationBar: const CustomBottomNavigationBar(selectedIndex: 3),
     );
   }
 }
 
-/// ------------------------
-///   МОДЕЛЬ ОРГАНИЗАТОРА
-/// ------------------------
 class Organizer {
   final String firstName;
   final String lastName;
@@ -113,9 +127,6 @@ class Organizer {
   });
 }
 
-/// ------------------------
-///   КАРТОЧКА ОРГАНИЗАТОРА
-/// ------------------------
 class OrganizerCard extends StatelessWidget {
   final Organizer organizer;
 
@@ -131,7 +142,14 @@ class OrganizerCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        context.push('/organizer-events', extra: organizer);
+        context.push(
+          '/fav_organizer',
+          extra: {
+            "name": "${organizer.firstName} ${organizer.lastName}",
+            "photo": organizer.photoUrl,
+            "phone": "89009090090", // можешь заменить на реальный
+          },
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
@@ -158,21 +176,6 @@ class OrganizerCard extends StatelessWidget {
                   width: 70,
                   height: 70,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.grey.shade400,
-                        size: 40,
-                      ),
-                    );
-                  },
                 ),
               ),
               const SizedBox(width: 16),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:myapp/widgets/custom_bottom_navigation_bar.dart';
+
+import '../../widgets/filter.dart';
+import '../../widgets/home_appbar_top.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,10 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screenContent = [
-      // --------------------- MAP HERE ---------------------
       FlutterMap(
         options: const MapOptions(
-          initialCenter: LatLng(59.9311, 30.3609), // Санкт-Петербург
+          initialCenter: LatLng(59.9311, 30.3609),
           initialZoom: 13,
         ),
         children: [
@@ -32,16 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-
-      // ----------------------------------------------------
-      Container(), // Event List
+      Container(),
       const Center(child: Text('Add Screen')),
-      Container(), // Favorite Organizers
+      Container(),
       const Center(child: Text('Profile Screen')),
     ];
 
     return Scaffold(
       backgroundColor: Colors.white,
+
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight + 24),
         child: Container(
@@ -56,35 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 12.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SvgPicture.asset('assets/images/logo.svg', height: 30),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildSearchBar()),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.notifications_none,
-                      color: Colors.black54,
-                      size: 30,
-                    ),
-                    onPressed: () {},
-                    tooltip: 'Уведомления',
-                  ),
-                ],
-              ),
-            ),
-          ),
+          child: HomeAppBarTop(searchBar: _buildSearchBar()),
         ),
       ),
+
       body: IndexedStack(index: _selectedIndex, children: screenContent),
+
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,
       ),
@@ -131,7 +108,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 IconButton(
                   padding: const EdgeInsets.only(right: 12.0),
                   icon: const Icon(Icons.tune, color: a, size: 24),
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) => const FilterBottomSheet(),
+                    );
+                  },
                   tooltip: 'Фильтры',
                 ),
               ],
